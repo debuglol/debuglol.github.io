@@ -31,7 +31,7 @@ def remove_accents(text_val):
 # ==========================================
 engine = create_engine(f"postgresql://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
 
-print("🔌 Connected to PostgreSQL! Clearing old tables...")
+print("INFO: Connected to PostgreSQL. Clearing existing tables...")
 
 # Truncate tables to ensure clean state on re-runs
 with engine.connect() as conn:
@@ -41,7 +41,7 @@ with engine.connect() as conn:
 # ==========================================
 # 3. LOAD, CLEAN & ASCII-CONVERT MERCHANTS
 # ==========================================
-print("🧹 Cleaning CSVs and converting to plain ASCII...")
+print("INFO: Processing CSV datasets and normalizing text encoding...")
 
 # Read datasets with automatic delimiter detection
 df_taxes = pd.read_csv('taxes_paid.csv', sep=None, engine='python', dtype=str)
@@ -67,12 +67,12 @@ dim_merchants = dim_merchants[dim_merchants['taxes_paid_eur'] > 0].drop_duplicat
 
 # Stream merchants into PostgreSQL
 dim_merchants.to_sql('dim_merchants', engine, if_exists='append', index=False, method='multi', chunksize=1000)
-print(f"✅ Loaded {len(dim_merchants)} ASCII-sanitized Lithuanian merchants into 'dim_merchants'!")
+print(f"SUCCESS: Loaded {len(dim_merchants)} normalized merchants into dim_merchants.")
 
 # ==========================================
 # 4. GENERATE SYNTHETIC TRANSACTIONS
 # ==========================================
-print("🚀 Generating synthetic payment transactions with latency bottlenecks...")
+print("INFO: Generating synthetic transaction data and simulating latency anomalies...")
 
 acquirers = ['SEB', 'Swedbank', 'Siauliu Bankas', 'Luminor', 'Revolut']
 top_merchants = dim_merchants.sort_values(by='taxes_paid_eur', ascending=False).head(500)
@@ -113,4 +113,4 @@ while current_count < total_records_needed:
         print(f"   ... Streamed {current_count:,} / {total_records_needed:,} transactions into PostgreSQL")
         transactions_batch = []
 
-print("🎉 DONE! All data is ASCII-sanitized and loaded into PostgreSQL.")
+print("SUCCESS: Data generation and database population complete.")
