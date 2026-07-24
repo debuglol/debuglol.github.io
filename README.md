@@ -78,7 +78,7 @@ The primary objective was to build a complete pipeline, from relational SQL view
 
 ├── 03\_create\_views.sql       # Production-ready analytical views for BI consumption
 
-├── generate\_shift4\_data.py   # Python synthetic dataset generator (1M rows)
+├── generate\_transaction\_data.py   # Python synthetic dataset generator (1M rows)
 
 ├── Payment\_Gateway\_NOC.pbix  # Power BI NOC Dashboard file
 
